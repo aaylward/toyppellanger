@@ -12,6 +12,8 @@ using std::string;
 using std::stringstream;
 using std::getline;
 
+using toyppellanger::ToyppelLangerLexer;
+
 ToyppelLangerLexer::ToyppelLangerLexer(const string &text) {
   nextWordIndex = 0;
   words = split(text, ' ');

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "interpreter.h"
+#include "builtins.h"
 
 using std::unordered_map;
 using std::stack;
@@ -11,7 +12,11 @@ using std::stold;
 using std::cout;
 using std::endl;
 
+using toyppellanger::ToyppelTerpreter;
+using toyppellanger::builtin_functions;
+
 ToyppelTerpreter::ToyppelTerpreter() {
+  addWords(builtin_functions);
 }
 
 void ToyppelTerpreter::addWords(unordered_map<string, void (*)(ToyppelTerpreter &interpreter)> tokens) {
@@ -36,18 +41,9 @@ stack<long double>& ToyppelTerpreter::getStack() {
   return numbers;
 }
 
-void printStack(ToyppelTerpreter& terp) {
-  while (!terp.getStack().empty()) {
-    cout << terp.getStack().top() << endl;
-    terp.getStack().pop();
-  }
-}
-
 int main() {
-  auto program = "1 432 23 43255 printStack";
+  auto program = "1 432 23 43255 printAndEmptyStack";
   ToyppelTerpreter interpreter;
-  unordered_map<string, void (*)(ToyppelTerpreter&)> dict = { {"printStack", printStack} };
-  interpreter.addWords(dict);
   interpreter.run(program);
   return 0;
 }
