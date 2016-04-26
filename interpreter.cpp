@@ -44,9 +44,9 @@ void printStack(ToyppelTerpreter& terp) {
 }
 
 int main() {
-  auto program = "1 432 23 43255 print";
+  auto program = "1 432 23 43255 printStack";
   ToyppelTerpreter interpreter = ToyppelTerpreter();
-  unordered_map<string, void (*)(ToyppelTerpreter&)> dict = { {"print", printStack} };
+  unordered_map<string, void (*)(ToyppelTerpreter&)> dict = { {"printStack", printStack} };
   interpreter.addWords(dict);
   interpreter.run(program);
   return 0;
