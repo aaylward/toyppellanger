@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 #include <utility>
 #include <sstream>
@@ -14,6 +13,7 @@ using std::stringstream;
 using std::getline;
 
 ToyppelLangerLexer::ToyppelLangerLexer(const string &text) {
+  nextWordIndex = 0;
   words = split(text, ' ');
 }
 
@@ -32,14 +32,4 @@ vector<string> ToyppelLangerLexer::split(const string &s, char delim) {
     elems.push_back(item);
   }
   return elems;
-}
-
-int main() {
-  auto program = "This is a cool program { yo };";
-  ToyppelLangerLexer lexer(program);
-  pair<bool, string> next;
-  while ((next = lexer.nextWord()).first) {
-    std::cout << next.second << std::endl;
-  }
-  return 0;
 }
