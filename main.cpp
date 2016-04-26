@@ -11,10 +11,6 @@ using std::endl;
 
 using toyppellanger::ToyppelTerpreter;
 
-void prompt() {
-  cout << "> ";
-}
-
 int main(int argc, char *argv[]) {
   if (argc > 2) {
     cout << "usage: toyp <program>" << endl;
@@ -30,10 +26,10 @@ int main(int argc, char *argv[]) {
 
   string lineInput;
 
-  prompt();
+  interpreter.prompt();
   while (getline(cin, lineInput)) {
     interpreter.run(lineInput);
-    prompt();
+    interpreter.prompt();
   }
   return 0;
 }

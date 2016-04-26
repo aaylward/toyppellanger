@@ -67,7 +67,7 @@ namespace toyppellanger {
   }
 
   void quit(ToyppelTerpreter &interpreter) {
-    exit(0);
+    interpreter.quit();
   }
 
   unordered_map<string, void (*)(ToyppelTerpreter&)> builtin_functions =
@@ -80,6 +80,7 @@ namespace toyppellanger {
     {"dump",  printAndEmptyStack},
     {"debug",  debugStack},
     {"clear",  clear},
+    {"quit",  quit},
   };
 }
 

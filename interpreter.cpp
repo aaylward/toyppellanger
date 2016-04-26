@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 #include "interpreter.h"
 #include "builtins.h"
@@ -9,6 +10,8 @@ using std::pair;
 using std::string;
 using std::to_string;
 using std::stold;
+using std::cout;
+using std::exit;
 
 using toyppellanger::ToyppelTerpreter;
 using toyppellanger::builtin_functions;
@@ -41,5 +44,13 @@ vector<long double>& ToyppelTerpreter::getStack() {
 
 void ToyppelTerpreter::clearStack() {
   stack.clear();
+}
+
+void ToyppelTerpreter::prompt() {
+  cout << "> ";
+}
+
+void ToyppelTerpreter::quit() {
+  exit(0);
 }
 
