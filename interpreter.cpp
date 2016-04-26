@@ -36,13 +36,18 @@ stack<long double>& ToyppelTerpreter::getStack() {
   return numbers;
 }
 
-int main() {
-  auto program = "1 432 23 43255";
-  ToyppelTerpreter interpreter = ToyppelTerpreter();
-  interpreter.run(program);
-  while (!interpreter.getStack().empty()) {
-    cout << interpreter.getStack().top() << endl;
-    interpreter.getStack().pop();
+void printStack(ToyppelTerpreter& terp) {
+  while (!terp.getStack().empty()) {
+    cout << terp.getStack().top() << endl;
+    terp.getStack().pop();
   }
+}
+
+int main() {
+  auto program = "1 432 23 43255 print";
+  ToyppelTerpreter interpreter = ToyppelTerpreter();
+  unordered_map<string, void (*)(ToyppelTerpreter&)> dict = { {"print", printStack} };
+  interpreter.addWords(dict);
+  interpreter.run(program);
   return 0;
 }
