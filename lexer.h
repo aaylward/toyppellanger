@@ -11,14 +11,14 @@ using std::vector;
 using std::pair;
 using std::string;
 
-class ToyppleLangerLexer {
+class ToyppelLangerLexer {
   private:
     vector<string> words;
     size_t nextWordIndex;
     vector<string> split(const string &s, char delim);
 
   public:
-    ToyppleLangerLexer(const string &text);
+    ToyppelLangerLexer(const string &text);
     pair<bool, string> nextWord();
 };
 

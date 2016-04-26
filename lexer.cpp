@@ -13,18 +13,18 @@ using std::string;
 using std::stringstream;
 using std::getline;
 
-ToyppleLangerLexer::ToyppleLangerLexer(const string &text) {
+ToyppelLangerLexer::ToyppelLangerLexer(const string &text) {
   words = split(text, ' ');
 }
 
-pair<bool, string> ToyppleLangerLexer::nextWord() {
+pair<bool, string> ToyppelLangerLexer::nextWord() {
   if (nextWordIndex >= words.size()) {
     return make_pair(false, "");
   }
   return make_pair(true, words[nextWordIndex++]);
 }
 
-vector<string> ToyppleLangerLexer::split(const string &s, char delim) {
+vector<string> ToyppelLangerLexer::split(const string &s, char delim) {
   stringstream ss(s);
   string item;
   vector<string> elems;
@@ -36,7 +36,7 @@ vector<string> ToyppleLangerLexer::split(const string &s, char delim) {
 
 int main() {
   auto program = "This is a cool program { yo };";
-  ToyppleLangerLexer lexer(program);
+  ToyppelLangerLexer lexer(program);
   pair<bool, string> next;
   while ((next = lexer.nextWord()).first) {
     std::cout << next.second << std::endl;
