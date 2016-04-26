@@ -1,10 +1,8 @@
 #ifndef TOYPPELLEXER
 #define TOYPPELLEXER
 
-#include <iostream>
 #include <vector>
 #include <utility>
-#include <sstream>
 #include <string>
 
 using std::vector;
