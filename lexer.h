@@ -1,5 +1,5 @@
-#ifndef TOYPPLELEXER
-#define TOYPPLELEXER
+#ifndef TOYPPELLEXER
+#define TOYPPELLEXER
 
 #include <iostream>
 #include <vector>
