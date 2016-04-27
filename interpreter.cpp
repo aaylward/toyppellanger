@@ -1,16 +1,17 @@
 #include <iostream>
+#include <cstdlib>
 
 #include "interpreter.h"
 #include "builtins.h"
 
 using std::unordered_map;
-using std::stack;
+using std::vector;
 using std::pair;
 using std::string;
 using std::to_string;
 using std::stold;
 using std::cout;
-using std::endl;
+using std::exit;
 
 using toyppellanger::ToyppelTerpreter;
 using toyppellanger::builtin_functions;
@@ -32,18 +33,24 @@ void ToyppelTerpreter::run(const string &program) {
       definedWords[nextWordMaybe.second](*this);
     } else {
       long double ld = stold(nextWordMaybe.second);
-      numbers.push(ld);
+      stack.push_back(ld);
     }
   }
 }
 
-stack<long double>& ToyppelTerpreter::getStack() {
-  return numbers;
+vector<long double>& ToyppelTerpreter::getStack() {
+  return stack;
 }
 
-int main() {
-  auto program = "1 432 23 43255 printAndEmptyStack";
-  ToyppelTerpreter interpreter;
-  interpreter.run(program);
-  return 0;
+void ToyppelTerpreter::clearStack() {
+  stack.clear();
 }
+
+void ToyppelTerpreter::prompt() {
+  cout << "> ";
+}
+
+void ToyppelTerpreter::quit() {
+  exit(0);
+}
+

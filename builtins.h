@@ -18,42 +18,56 @@ using std::endl;
 namespace toyppellanger {
 
   pair<long double, long double> getNextPair(ToyppelTerpreter &interpreter) {
-    long double first = interpreter.getStack().top();
-    interpreter.getStack().pop();
-    long double second = interpreter.getStack().top();
-    interpreter.getStack().pop();
+    long double first = interpreter.getStack().back();
+    interpreter.getStack().pop_back();
+    long double second = interpreter.getStack().back();
+    interpreter.getStack().pop_back();
     return make_pair(first, second);
   }
 
   void add(ToyppelTerpreter &interpreter) {
     pair<long double, long double> operands = getNextPair(interpreter);
-    interpreter.getStack().push(operands.first + operands.second);
+    interpreter.getStack().push_back(operands.first + operands.second);
   }
 
   void subtract(ToyppelTerpreter &interpreter) {
     pair<long double, long double> operands = getNextPair(interpreter);
-    interpreter.getStack().push(operands.first - operands.second);
+    interpreter.getStack().push_back(operands.first - operands.second);
   }
 
   void multiply(ToyppelTerpreter &interpreter) {
     pair<long double, long double> operands = getNextPair(interpreter);
-    interpreter.getStack().push(operands.first * operands.second);
+    interpreter.getStack().push_back(operands.first * operands.second);
   }
 
   void divide(ToyppelTerpreter &interpreter) {
     pair<long double, long double> operands = getNextPair(interpreter);
-    interpreter.getStack().push(operands.first / operands.second);
+    interpreter.getStack().push_back(operands.first / operands.second);
   }
 
   void printTop(ToyppelTerpreter &interpreter) {
-    cout << interpreter.getStack().top() << endl;
+    cout << interpreter.getStack().back() << endl;
   }
 
-  void printAndEmptyStack(ToyppelTerpreter& interpreter) {
+  void clear(ToyppelTerpreter &interpreter) {
+    interpreter.clearStack();
+  }
+
+  void printAndEmptyStack(ToyppelTerpreter &interpreter) {
     while (!interpreter.getStack().empty()) {
-      cout << interpreter.getStack().top() << endl;
-      interpreter.getStack().pop();
+      cout << interpreter.getStack().back() << endl;
+      interpreter.getStack().pop_back();
     }
+  }
+
+  void debugStack(ToyppelTerpreter &interpreter) {
+    for (auto item : interpreter.getStack()) {
+      cout << "[DEBUG]: " << item << endl;
+    }
+  }
+
+  void quit(ToyppelTerpreter &interpreter) {
+    interpreter.quit();
   }
 
   unordered_map<string, void (*)(ToyppelTerpreter&)> builtin_functions =
@@ -62,8 +76,11 @@ namespace toyppellanger {
     {"-", subtract},
     {"*", multiply},
     {"/", divide},
-    {"printTop",  printTop},
-    {"printAndEmptyStack",  printAndEmptyStack},
+    {"print",  printTop},
+    {"dump",  printAndEmptyStack},
+    {"debug",  debugStack},
+    {"clear",  clear},
+    {"quit",  quit},
   };
 }
 
