@@ -27,6 +27,7 @@ namespace toyppellanger {
       void clearStack();
       void debugStack();
       void prompt();
+      void sayBye();
       void quit();
   };
 }

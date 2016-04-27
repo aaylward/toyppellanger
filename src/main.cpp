@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
     interpreter.run(lineInput);
     interpreter.prompt();
   }
+  interpreter.sayBye();
   return 0;
 }
 

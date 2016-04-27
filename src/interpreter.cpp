@@ -26,13 +26,13 @@ void ToyppelTerpreter::addWords(unordered_map<string, void (*)(ToyppelTerpreter 
 
 void ToyppelTerpreter::run(const string &program) {
   ToyppelLangerLexer lexer(program);
-  pair<bool, string> nextWordMaybe;
+  pair<bool, string> nextTokenMaybe;
 
-  while ((nextWordMaybe = lexer.nextWord()).first) {
-    if (definedWords.count(nextWordMaybe.second) != 0) {
-      definedWords[nextWordMaybe.second](*this);
+  while ((nextTokenMaybe = lexer.nextToken()).first) {
+    if (definedWords.count(nextTokenMaybe.second) != 0) {
+      definedWords[nextTokenMaybe.second](*this);
     } else {
-      long double ld = stold(nextWordMaybe.second);
+      long double ld = stold(nextTokenMaybe.second);
       stack.push_back(ld);
     }
   }
@@ -60,8 +60,13 @@ void ToyppelTerpreter::prompt() {
   cout << "> ";
 }
 
+void ToyppelTerpreter::sayBye() {
+  cout << "bye!" << endl;
+}
+
 void ToyppelTerpreter::quit() {
-  cout << "> bye!" << endl;
+  prompt();
+  sayBye();
   exit(0);
 }
 
