@@ -60,8 +60,13 @@ void ToyppelTerpreter::prompt() {
   cout << "> ";
 }
 
+void ToyppelTerpreter::sayBye() {
+  cout << "bye!" << endl;
+}
+
 void ToyppelTerpreter::quit() {
-  cout << "> bye!" << endl;
+  prompt();
+  sayBye();
   exit(0);
 }
 
