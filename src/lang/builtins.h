@@ -1,8 +1,6 @@
 #ifndef TOYPPELBUILTINS
 #define TOYPPELBUILTINS
 
-#include <iostream>
-#include <utility>
 #include <unordered_map>
 #include <string>
 
@@ -11,10 +9,6 @@
 
 using std::unordered_map;
 using std::string;
-using std::pair;
-using std::make_pair;
-using std::cout;
-using std::endl;
 
 namespace toyppellanger {
   namespace lang {
