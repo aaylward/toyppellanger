@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <string>
 
-#include "interpreter.h"
+#include "../interpreter.h"
 
 using std::unordered_map;
 using std::string;
