@@ -31,7 +31,6 @@ int main(int argc, char *argv[]) {
     interpreter.run(lineInput);
     interpreter.prompt();
   }
-  cout << "bye!" << endl;
   return 0;
 }
 

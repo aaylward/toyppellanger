@@ -8,9 +8,9 @@ using std::unordered_map;
 using std::vector;
 using std::pair;
 using std::string;
-using std::to_string;
 using std::stold;
 using std::cout;
+using std::endl;
 using std::exit;
 
 using toyppellanger::ToyppelTerpreter;
@@ -61,6 +61,7 @@ void ToyppelTerpreter::prompt() {
 }
 
 void ToyppelTerpreter::quit() {
+  cout << "> bye!" << endl;
   exit(0);
 }
 
