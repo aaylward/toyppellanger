@@ -13,13 +13,17 @@ namespace toyppellanger {
 
   class ToyppelLangerLexer {
     private:
-      vector<string> words;
-      size_t nextWordIndex;
-      vector<string> split(const string &s, char delim);
+      vector<string> tokens;
+      size_t position;
+      bool isWhitespace(const char& c);
+      bool isParen(const char& c);
+      bool isStartOfToken(const string& s, size_t position);
+      bool isEndOfToken(const string& s, size_t position);
+      vector<string> tokenize(const string& s);
 
     public:
-      ToyppelLangerLexer(const string &text);
-      pair<bool, string> nextWord();
+      ToyppelLangerLexer(const string& program);
+      pair<bool, string> nextToken();
   };
 }
 
