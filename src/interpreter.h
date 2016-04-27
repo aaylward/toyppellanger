@@ -23,7 +23,9 @@ namespace toyppellanger {
       void addWords(unordered_map<string, void (*)(ToyppelTerpreter &interpreter)> definedTokens);
       void run(const string &program);
       vector<long double>& getStack();
+      void printTop();
       void clearStack();
+      void debugStack();
       void prompt();
       void quit();
   };

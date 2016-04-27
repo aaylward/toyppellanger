@@ -42,8 +42,18 @@ vector<long double>& ToyppelTerpreter::getStack() {
   return stack;
 }
 
+void ToyppelTerpreter::printTop() {
+  cout << stack.back() << endl;
+}
+
 void ToyppelTerpreter::clearStack() {
   stack.clear();
+}
+
+void ToyppelTerpreter::debugStack() {
+  for (auto item : stack) {
+    cout << "[DEBUG]: " << item << endl;
+  }
 }
 
 void ToyppelTerpreter::prompt() {
