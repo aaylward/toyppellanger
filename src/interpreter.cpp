@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 #include "interpreter.h"
-#include "builtins.h"
+#include "lang/builtins.h"
 
 using std::unordered_map;
 using std::vector;
@@ -14,7 +14,7 @@ using std::cout;
 using std::exit;
 
 using toyppellanger::ToyppelTerpreter;
-using toyppellanger::builtin_functions;
+using toyppellanger::lang::builtin_functions;
 
 ToyppelTerpreter::ToyppelTerpreter() {
   addWords(builtin_functions);
@@ -42,8 +42,18 @@ vector<long double>& ToyppelTerpreter::getStack() {
   return stack;
 }
 
+void ToyppelTerpreter::printTop() {
+  cout << stack.back() << endl;
+}
+
 void ToyppelTerpreter::clearStack() {
   stack.clear();
+}
+
+void ToyppelTerpreter::debugStack() {
+  for (auto item : stack) {
+    cout << "[DEBUG]: " << item << endl;
+  }
 }
 
 void ToyppelTerpreter::prompt() {
