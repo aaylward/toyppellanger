@@ -51,9 +51,11 @@ void ToyppelTerpreter::clearStack() {
 }
 
 void ToyppelTerpreter::debugStack() {
+  cout << "[DEBUG]: START" << endl;
   for (auto item : stack) {
     cout << "[DEBUG]: " << item << endl;
   }
+  cout << "[DEBUG]: END" << endl;
 }
 
 void ToyppelTerpreter::prompt() {

@@ -26,46 +26,34 @@ pair<bool, string> ToyppelLangerLexer::nextToken() {
 }
 
 vector<string> ToyppelLangerLexer::tokenize(const string& s) {
-  vector<string> _tokens;
+  vector<string> tokens;
 
   size_t start = 0;
   bool in_string = false;
 
   for (size_t i=0; i<s.length(); i++) {
     if (in_string) {
-      if (s[i] == '"') {
-        _tokens.push_back(s.substr(start, i - start + 1));
+      if (isStringBoundary(s[i])) {
+        tokens.push_back(s.substr(start, i - start + 1));
         start = i + 1;
         in_string = false;
       }
       continue;
-    }
-
-    if (s[i] == '"') {
+    } else if (isStringBoundary(s[i])) {
       start = i;
       in_string = true;
-      continue;
-    }
-
-    if (isParen(s[i])) {
-      _tokens.push_back(s.substr(i, 1));
+    } else if (isParen(s[i])) {
+      tokens.push_back(s.substr(i, 1));
       start = i + 1;
-      continue;
-    }
-
-    if (isWhitespace(s[i])) {
+    } else if (isWhitespace(s[i])) {
       start = i + 1;
-      continue;
-    }
-
-    if (isStartOfToken(s, i)) {
+    } else if (isStartOfToken(in_string, s, i)) {
       start = i;
     }
 
-    if (isEndOfToken(s, i)) {
-      _tokens.push_back(s.substr(start, i - start + 1));
+    if (isEndOfToken(in_string, s, i)) {
+      tokens.push_back(s.substr(start, i - start + 1));
       start = i + 1;
-      continue;
     }
   }
 
@@ -73,21 +61,25 @@ vector<string> ToyppelLangerLexer::tokenize(const string& s) {
     throw runtime_error("unexpected end of input");
   }
 
-  return _tokens;
+  return tokens;
 }
 
 bool ToyppelLangerLexer::isWhitespace(const char& c) {
   return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\0';
 }
 
-bool ToyppelLangerLexer::isStartOfToken(const string& s, size_t position) {
-  return isParen(s[position]) || (!isWhitespace(s[position]) && (position == 0 || isWhitespace(s[position - 1])));
+bool ToyppelLangerLexer::isStartOfToken(const bool& in_string, const string& s, size_t position) {
+  return !in_string && (isParen(s[position]) || (!isWhitespace(s[position]) && (position == 0 || isWhitespace(s[position - 1]))));
 }
 
-bool ToyppelLangerLexer::isEndOfToken(const string& s, size_t position) {
-  return position == s.length() - 1 || (isParen(s[position + 1]) || isWhitespace(s[position+1]));
+bool ToyppelLangerLexer::isEndOfToken(const bool& in_string, const string& s, size_t position) {
+  return !in_string && (position == s.length() - 1 || (isParen(s[position + 1]) || isWhitespace(s[position+1])));
 }
 
 bool ToyppelLangerLexer::isParen(const char& c) {
   return c == '(' || c == ')';
+}
+
+bool ToyppelLangerLexer::isStringBoundary(const char& c) {
+  return c == '"';
 }
