@@ -1,2 +1,11 @@
 all:
-	g++ -pipe -O2 -std=c++11 -Werror -Wall -g src/lexer.cpp src/interpreter.cpp src/main.cpp -o toyp
+	rm -rf build
+	mkdir build
+	g++ -pipe -O2 -std=c++11 -Werror -Wall -g src/lexer.cpp src/interpreter.cpp src/main.cpp -o build/toyp
+
+test:
+	rm -rf testbuild
+	mkdir testbuild
+	g++ -pipe -O2 -std=c++11 -Werror -Wall -g src/lexer.cpp src/tests/lexer_tests.cpp -o testbuild/lexer_test
+	./testbuild/lexer_test
+
