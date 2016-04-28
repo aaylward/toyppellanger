@@ -9,3 +9,6 @@ test:
 	g++ -pipe -O2 -std=c++11 -Werror -Wall -g src/lexer.cpp src/tests/lexer_tests.cpp -o testbuild/lexer_test
 	./testbuild/lexer_test
 
+clean:
+	rm -rf build
+	rm -rf testbuild
