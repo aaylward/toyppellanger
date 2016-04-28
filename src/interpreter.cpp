@@ -25,7 +25,7 @@ void ToyppelTerpreter::addWords(unordered_map<string, void (*)(ToyppelTerpreter 
 }
 
 void ToyppelTerpreter::run(const string &program) {
-  ToyppelLangerLexer lexer(program);
+  ToyppelLexer lexer(program);
   pair<bool, string> nextTokenMaybe;
 
   while ((nextTokenMaybe = lexer.nextToken()).first) {

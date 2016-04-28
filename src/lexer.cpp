@@ -1,57 +1,84 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <set>
 #include <stdexcept>
 
 #include "lexer.h"
 
 using std::vector;
 using std::pair;
+using std::set;
 using std::make_pair;
 using std::string;
 using std::runtime_error;
 
-using toyppellanger::ToyppelLangerLexer;
+using toyppellanger::ToyppelLexer;
 
-ToyppelLangerLexer::ToyppelLangerLexer(const string& program) {
-  position = 0;
-  tokens = tokenize(program);
+const set<char> WHITESPACE = { ' ', '\t', '\n', '\r', '\0' };
+
+bool blank(bool in_str, char c) {
+  return (!in_str && WHITESPACE.find(c) != WHITESPACE.end());
+};
+
+bool isParen(bool in_str, char c) {
+  return !in_str && (c == '(' || c == ')'); };
+
+bool isStringBoundary(const char& c) {
+  return c == '"';
 }
 
-pair<bool, string> ToyppelLangerLexer::nextToken() {
+bool isStartOfToken(const bool& in_str, const string& s, size_t p) {
+  return isParen(in_str, s[p]) || (!blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1])));
+}
+
+bool isEndOfToken(const bool& in_str, const string& s, size_t p) {
+  return p == s.length() - 1 || (isParen(in_str, s[p+1]) || blank(in_str, s[p+1]));
+}
+
+ToyppelLexer::ToyppelLexer(const string& program) {
+  position = 0;
+  tokens = {};
+  tokenize(program, tokens);
+}
+
+vector<string>& ToyppelLexer::getTokens() {
+  return tokens;
+}
+
+pair<bool, string> ToyppelLexer::nextToken() {
   if (position >= tokens.size()) {
     return make_pair(false, "");
   }
   return make_pair(true, tokens[position++]);
 }
 
-vector<string> ToyppelLangerLexer::tokenize(const string& s) {
-  vector<string> tokens;
-
+void ToyppelLexer::tokenize(const string& s, vector<string>& tokens) {
   size_t start = 0;
   bool in_string = false;
 
   for (size_t i=0; i<s.length(); i++) {
-    if (in_string) {
-      if (isStringBoundary(s[i])) {
-        tokens.push_back(s.substr(start, i - start + 1));
-        start = i + 1;
-        in_string = false;
-      }
+    if (blank(in_string, s[i])) {
+      start = i+1;
       continue;
     } else if (isStringBoundary(s[i])) {
-      start = i;
-      in_string = true;
-    } else if (isParen(s[i])) {
+      if (in_string) {
+        tokens.push_back(s.substr(start, i - start + 1));
+        start = i + 1;
+      } else {
+        start = i;
+      }
+      in_string = !in_string;
+      continue;
+    } else if (isParen(in_string, s[i])) {
       tokens.push_back(s.substr(i, 1));
       start = i + 1;
-    } else if (isWhitespace(s[i])) {
-      start = i + 1;
-    } else if (isStartOfToken(in_string, s, i)) {
-      start = i;
+      continue;
     }
 
-    if (isEndOfToken(in_string, s, i)) {
+    if (isStartOfToken(in_string, s, i)) {
+      start = i;
+    } else if (isEndOfToken(in_string, s, i)) {
       tokens.push_back(s.substr(start, i - start + 1));
       start = i + 1;
     }
@@ -60,26 +87,4 @@ vector<string> ToyppelLangerLexer::tokenize(const string& s) {
   if (in_string) {
     throw runtime_error("unexpected end of input");
   }
-
-  return tokens;
-}
-
-bool ToyppelLangerLexer::isWhitespace(const char& c) {
-  return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\0';
-}
-
-bool ToyppelLangerLexer::isStartOfToken(const bool& in_string, const string& s, size_t position) {
-  return !in_string && (isParen(s[position]) || (!isWhitespace(s[position]) && (position == 0 || isWhitespace(s[position - 1]))));
-}
-
-bool ToyppelLangerLexer::isEndOfToken(const bool& in_string, const string& s, size_t position) {
-  return !in_string && (position == s.length() - 1 || (isParen(s[position + 1]) || isWhitespace(s[position+1])));
-}
-
-bool ToyppelLangerLexer::isParen(const char& c) {
-  return c == '(' || c == ')';
-}
-
-bool ToyppelLangerLexer::isStringBoundary(const char& c) {
-  return c == '"';
 }

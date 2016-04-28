@@ -11,19 +11,15 @@ using std::string;
 
 namespace toyppellanger {
 
-  class ToyppelLangerLexer {
+  class ToyppelLexer {
     private:
       vector<string> tokens;
       size_t position;
-      bool isWhitespace(const char& c);
-      bool isParen(const char& c);
-      bool isStringBoundary(const char& c);
-      bool isStartOfToken(const bool& in_string, const string& s, size_t position);
-      bool isEndOfToken(const bool& in_string, const string& s, size_t position);
-      vector<string> tokenize(const string& s);
+      void tokenize(const string& s, vector<string>& v);
 
     public:
-      ToyppelLangerLexer(const string& program);
+      ToyppelLexer(const string& program);
+      vector<string>& getTokens();
       pair<bool, string> nextToken();
   };
 }
