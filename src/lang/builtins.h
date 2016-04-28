@@ -19,10 +19,10 @@ namespace toyppellanger {
       {"-", subtract},
       {"*", multiply},
       {"/", divide},
-      {"print",  [](ToyppelTerpreter &t) -> void {t.printTop();}},
-      {"debug",  [](ToyppelTerpreter &t) -> void {t.debugStack();}},
-      {"clear",  [](ToyppelTerpreter &t) -> void {t.clearStack();}},
-      {"quit",  [](ToyppelTerpreter &t) -> void {t.quit();}},
+      {"print",  [](ToyppelTerpreter& t) -> void {t.printTop();}},
+      {"debug",  [](ToyppelTerpreter& t) -> void {t.debugStack();}},
+      {"clear",  [](ToyppelTerpreter& t) -> void {t.clearStack();}},
+      {"quit",  [](ToyppelTerpreter& t) -> void {t.quit();}},
     };
   }
 }

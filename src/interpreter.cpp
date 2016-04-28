@@ -26,8 +26,11 @@ void ToyppelTerpreter::addWords(unordered_map<string, void (*)(ToyppelTerpreter 
 
 void ToyppelTerpreter::run(const string &program) {
   lexer.tokenize(program);
+  pair<bool, string> nextTokenMaybe;
+  string token;
 
-  for (auto token : lexer.getTokens()) {
+  while ((nextTokenMaybe = lexer.nextToken()).first) {
+    token = nextTokenMaybe.second;
     if (definedFunctions.count(token) != 0) {
       definedFunctions[token](*this);
     } else {
