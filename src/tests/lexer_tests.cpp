@@ -43,10 +43,18 @@ void itCanReadParensWithAndWithoutSpaces(bool& passing) {
   report("itCanReadParensWithAndWithoutSpaces", passing, tokens, expected);
 }
 
+void itCanReadLetStatements(bool& passing) {
+  auto program = "let a 1";
+  vector<string> tokens = getTokens(program);
+  vector<string> expected = {"let", "a", "1"};
+  report("itCanReadLetStatements", passing, tokens, expected);
+}
+
 int main() {
   bool passing = true;
   itCanReadStringsInsideParens(passing);
   itCanReadParensWithAndWithoutSpaces(passing);
+  itCanReadLetStatements(passing);
   if (passing) {
     cout << "[LEXER TESTS] : ALL PASSED" << endl;
     return 0;
