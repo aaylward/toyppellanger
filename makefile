@@ -3,6 +3,9 @@ all:
 	mkdir build
 	g++ -pipe -O2 -std=c++11 -Werror -Wall -g src/lexer.cpp src/interpreter.cpp src/main.cpp -o build/toyp
 
+install:
+	cp build/toyp /usr/local/bin/toyp
+
 test:
 	rm -rf testbuild
 	mkdir testbuild

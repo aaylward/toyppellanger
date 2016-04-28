@@ -17,8 +17,8 @@ namespace toyppellanger {
   class ToyppelTerpreter {
     public:
       ToyppelTerpreter(ToyppelLexer& lexer);
-      void addWords(unordered_map<string, void (*)(ToyppelTerpreter &interpreter)> definedTokens);
-      void run(const string &program);
+      void addWords(unordered_map<string, void (*)(ToyppelTerpreter& interpreter)> definedTokens);
+      void run(const string& program);
       vector<long double>& getStack();
       void printTop();
       void clearStack();
