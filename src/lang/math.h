@@ -11,7 +11,7 @@ using std::make_pair;
 namespace toyppellanger {
   namespace lang {
 
-    pair<long double, long double> getNextPair(ToyppelTerpreter &interpreter) {
+    pair<long double, long double> getNextPair(ToyppelTerpreter& interpreter) {
       long double first = interpreter.getStack().back();
       interpreter.getStack().pop_back();
       long double second = interpreter.getStack().back();

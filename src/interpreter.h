@@ -20,6 +20,7 @@ namespace toyppellanger {
       void addWords(unordered_map<string, void (*)(ToyppelTerpreter& interpreter)> definedTokens);
       void run(const string& program);
       vector<long double>& getStack();
+      void define(string name, long double value);
       void printTop();
       void clearStack();
       void debugStack();
@@ -30,7 +31,7 @@ namespace toyppellanger {
     private:
       ToyppelLexer& lexer;
       unordered_map<string, void (*)(ToyppelTerpreter&)> definedFunctions = {};
-      set<string, long double> definedVariables = {};
+      unordered_map<string, long double> definedVariables = {};
       vector<long double> stack = {};
   };
 }
