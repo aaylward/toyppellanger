@@ -16,24 +16,22 @@ using std::exit;
 using toyppellanger::ToyppelTerpreter;
 using toyppellanger::lang::builtin_functions;
 
-ToyppelTerpreter::ToyppelTerpreter() {
+ToyppelTerpreter::ToyppelTerpreter(ToyppelLexer& lexer) : lexer(lexer) {
   addWords(builtin_functions);
 }
 
 void ToyppelTerpreter::addWords(unordered_map<string, void (*)(ToyppelTerpreter &interpreter)> tokens) {
-  definedWords.insert(tokens.begin(), tokens.end());
+  definedFunctions.insert(tokens.begin(), tokens.end());
 }
 
 void ToyppelTerpreter::run(const string &program) {
-  ToyppelLexer lexer(program);
-  pair<bool, string> nextTokenMaybe;
+  lexer.tokenize(program);
 
-  while ((nextTokenMaybe = lexer.nextToken()).first) {
-    if (definedWords.count(nextTokenMaybe.second) != 0) {
-      definedWords[nextTokenMaybe.second](*this);
+  for (auto token : lexer.getTokens()) {
+    if (definedFunctions.count(token) != 0) {
+      definedFunctions[token](*this);
     } else {
-      long double ld = stold(nextTokenMaybe.second);
-      stack.push_back(ld);
+      stack.push_back(stold(token));
     }
   }
 }
