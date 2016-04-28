@@ -15,16 +15,7 @@ using std::endl;
 using toyppellanger::ToyppelLexer;
 
 vector<string> getTokens(const string& program) {
-  ToyppelLexer l(program);
-  vector<string> tokens;
-
-  pair<bool, string> next;
-
-  while ((next = l.nextToken()).first) {
-    tokens.push_back(next.second);
-  }
-
-  return tokens;
+  return ToyppelLexer(program).getTokens();
 }
 
 void report(const char* test, bool& passing, vector<string>& actual, vector<string>& expected) {
