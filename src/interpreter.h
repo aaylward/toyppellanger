@@ -3,23 +3,20 @@
 
 #include <unordered_map>
 #include <vector>
+#include <set>
 #include <string>
 
 #include "lexer.h"
 
 using std::unordered_map;
 using std::vector;
+using std::set;
 using std::string;
 
 namespace toyppellanger {
-
   class ToyppelTerpreter {
-    private:
-      unordered_map<string, void (*)(ToyppelTerpreter&)> definedWords = {};
-      vector<long double> stack = {};
-
     public:
-      ToyppelTerpreter();
+      ToyppelTerpreter(ToyppelLexer& lexer);
       void addWords(unordered_map<string, void (*)(ToyppelTerpreter &interpreter)> definedTokens);
       void run(const string &program);
       vector<long double>& getStack();
@@ -29,6 +26,12 @@ namespace toyppellanger {
       void prompt();
       void sayBye();
       void quit();
+
+    private:
+      ToyppelLexer& lexer;
+      unordered_map<string, void (*)(ToyppelTerpreter&)> definedFunctions = {};
+      set<string, long double> definedVariables = {};
+      vector<long double> stack = {};
   };
 }
 

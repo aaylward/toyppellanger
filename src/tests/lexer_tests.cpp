@@ -15,7 +15,9 @@ using std::endl;
 using toyppellanger::ToyppelLexer;
 
 vector<string> getTokens(const string& program) {
-  return ToyppelLexer(program).getTokens();
+  ToyppelLexer lexer;
+  lexer.tokenize(program);
+  return lexer.getTokens();
 }
 
 void report(const char* test, bool& passing, vector<string>& actual, vector<string>& expected) {

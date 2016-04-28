@@ -36,24 +36,9 @@ bool isEndOfToken(const bool& in_str, const string& s, size_t p) {
   return p == s.length() - 1 || (isParen(in_str, s[p+1]) || blank(in_str, s[p+1]));
 }
 
-ToyppelLexer::ToyppelLexer(const string& program) {
-  position = 0;
-  tokens = {};
-  tokenize(program, tokens);
-}
+ToyppelLexer::ToyppelLexer() {}
 
-vector<string>& ToyppelLexer::getTokens() {
-  return tokens;
-}
-
-pair<bool, string> ToyppelLexer::nextToken() {
-  if (position >= tokens.size()) {
-    return make_pair(false, "");
-  }
-  return make_pair(true, tokens[position++]);
-}
-
-void ToyppelLexer::tokenize(const string& s, vector<string>& tokens) {
+void ToyppelLexer::tokenize(const string& s) {
   size_t start = 0;
   bool in_string = false;
 
@@ -87,4 +72,15 @@ void ToyppelLexer::tokenize(const string& s, vector<string>& tokens) {
   if (in_string) {
     throw runtime_error("unexpected end of input");
   }
+}
+
+vector<string> ToyppelLexer::getTokens() {
+  return tokens;
+}
+
+pair<bool, string> ToyppelLexer::nextToken() {
+  if (position >= tokens.size()) {
+    return make_pair(false, "");
+  }
+  return make_pair(true, tokens[position++]);
 }

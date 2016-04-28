@@ -9,6 +9,7 @@ using std::cout;
 using std::getline;
 using std::endl;
 
+using toyppellanger::ToyppelLexer;
 using toyppellanger::ToyppelTerpreter;
 
 int main(int argc, char *argv[]) {
@@ -17,7 +18,8 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  ToyppelTerpreter interpreter;
+  ToyppelLexer lexer;
+  ToyppelTerpreter interpreter(lexer);
 
   if (argc == 2) {
     interpreter.run(argv[1]);
