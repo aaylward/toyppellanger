@@ -30,8 +30,10 @@ bool isStringBoundary(const char& c) {
 
 bool isStartOfToken(const bool in_str, const string& s, size_t p) {
   return (
-      (!in_str && isStringBoundary(s[p])) ||
-      (!in_str && !blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]) || isParen(s[p-1]))));
+      !in_str && (
+        isStringBoundary(s[p]) ||
+        isParen(s[p]) ||
+        (!blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]) || isParen(s[p-1])))));
 }
 
 bool isEndOfToken(const bool in_str, const string& s, size_t p) {
@@ -64,7 +66,6 @@ void ToyppelLexer::tokenize(const string& line) {
       emit(leftover_string + line.substr(start, i - start + 1));
       leftover_string = "";
       in_string = false;
-      start = i + 1;
     }
   }
 

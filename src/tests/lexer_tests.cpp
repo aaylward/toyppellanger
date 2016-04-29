@@ -14,6 +14,8 @@ using std::endl;
 
 using toyppellanger::ToyppelLexer;
 
+#define DEBUG for(auto t : tokens) cout << t << endl;
+
 vector<string> getTokens(const string& program) {
   ToyppelLexer lexer;
   lexer.tokenize(program);
@@ -50,13 +52,23 @@ void itCanReadLetStatements(bool& passing) {
   report("itCanReadLetStatements", passing, tokens, expected);
 }
 
-void itCanReadStringsAcrossLines(bool& passing) {
+void itCanReadStringsAcrossTwoLines(bool& passing) {
   ToyppelLexer lexer;
   lexer.tokenize("Ralph said, \"Hello, ");
   lexer.tokenize("World!\"()");
   vector<string> tokens = lexer.getTokens();
   vector<string> expected = {"Ralph", "said,", "\"Hello, World!\"", "(", ")"};
-  report("itCanReadStringsAcrossLines", passing, tokens, expected);
+  report("itCanReadStringsAcrossTwoLines", passing, tokens, expected);
+}
+
+void itCanReadStringsAcrossMoreThanTwoLines(bool& passing) {
+  ToyppelLexer lexer;
+  lexer.tokenize("Ralph said, \"Hello, ");
+  lexer.tokenize("123 ");
+  lexer.tokenize("World!\"()");
+  vector<string> tokens = lexer.getTokens();
+  vector<string> expected = {"Ralph", "said,", "\"Hello, 123 World!\"", "(", ")"};
+  report("itCanReadStringsAcrossMoreThanTwoLines", passing, tokens, expected);
 }
 
 void itCanReadStringsJammedTogether(bool& passing) {
@@ -70,7 +82,8 @@ int main() {
   itCanReadStringsInsideParens(passing);
   itCanReadParensWithAndWithoutSpaces(passing);
   itCanReadLetStatements(passing);
-  itCanReadStringsAcrossLines(passing);
+  itCanReadStringsAcrossTwoLines(passing);
+  itCanReadStringsAcrossMoreThanTwoLines(passing);
   itCanReadStringsJammedTogether(passing);
   if (passing) {
     cout << "[LEXER TESTS] : ALL PASSED" << endl;
