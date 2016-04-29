@@ -17,11 +17,11 @@ const set<char> WHITESPACE = { ' ', '\t', '\n', '\r', '\0' };
 
 bool blank(const bool in_str, char c) {
   return !in_str && WHITESPACE.find(c) != WHITESPACE.end();
-};
+}
 
 bool isParen(char c) {
   return c == '(' || c == ')';
-};
+}
 
 bool isStringBoundary(const char& c) {
   return c == '"';
@@ -87,7 +87,7 @@ void ToyppelLexer::onTokenStart(size_t& start, size_t i, char c) {
   if (isStringBoundary(c)) {
     in_string = true;
   }
-};
+}
 
 void ToyppelLexer::onTokenEnd(string token) {
   store(leftover_string + token);
