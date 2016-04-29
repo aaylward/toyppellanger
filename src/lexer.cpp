@@ -29,13 +29,13 @@ bool isStringBoundary(const char& c) {
 }
 
 bool isStartOfToken(const bool in_str, const string& s, size_t p) {
-  return !in_str && !blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]));
+  return !in_str && !blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]) || isParen(s[p-1]));
 }
 
 bool isEndOfToken(const bool in_str, const string& s, size_t p) {
   return (
       (in_str && isStringBoundary(s[p])) ||
-      (p == s.length() - 1) ||
+      (p == s.length() - 1 && (in_str && isStringBoundary(s[p]))) ||
       (!in_str && (isParen(s[p]) || isParen(s[p+1]))) ||
       (blank(in_str, s[p+1])));
 }
@@ -46,6 +46,7 @@ void ToyppelLexer::tokenize(const string& line) {
   size_t start = 0;
 
   for (size_t i=0; i<line.length(); i++) {
+    was_in_string = in_string;
     if (blank(in_string, line[i])) {
       continue;
     }
@@ -54,20 +55,25 @@ void ToyppelLexer::tokenize(const string& line) {
       start = i;
       if (isStringBoundary(line[i])) {
         in_string = true;
+        leftover_string = "";
       }
     }
 
-    if (isEndOfToken(in_string, line, i)) {
-      tokens.push_back(line.substr(start, i - start + 1));
+    if (isEndOfToken(in_string && was_in_string, line, i)) {
+      string tokenChunkReadFromLine = line.substr(start, i - start + 1);
       if (isStringBoundary(line[i])) {
         in_string = false;
+        tokens.push_back(leftover_string + tokenChunkReadFromLine);
+        leftover_string = "";
+      } else {
+        tokens.push_back(tokenChunkReadFromLine);
       }
       start = i + 1;
     }
   }
 
   if (in_string) {
-    throw runtime_error("unexpected end of input");
+    leftover_string += line.substr(start, line.length() - start + 1);
   }
 }
 

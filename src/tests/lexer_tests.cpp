@@ -50,11 +50,21 @@ void itCanReadLetStatements(bool& passing) {
   report("itCanReadLetStatements", passing, tokens, expected);
 }
 
+void itCanReadStringsAcrossLines(bool& passing) {
+  ToyppelLexer lexer;
+  lexer.tokenize("Ralph said, \"Hello, ");
+  lexer.tokenize("World!\"()");
+  vector<string> tokens = lexer.getTokens();
+  vector<string> expected = {"Ralph", "said,", "\"Hello, World!\"", "(", ")"};
+  report("itCanReadStringsAcrossLines", passing, tokens, expected);
+}
+
 int main() {
   bool passing = true;
   itCanReadStringsInsideParens(passing);
   itCanReadParensWithAndWithoutSpaces(passing);
   itCanReadLetStatements(passing);
+  itCanReadStringsAcrossLines(passing);
   if (passing) {
     cout << "[LEXER TESTS] : ALL PASSED" << endl;
     return 0;
