@@ -22,9 +22,9 @@ vector<string> getTokens(const string& program) {
 
 void report(const char* test, bool& passing, vector<string>& actual, vector<string>& expected) {
   if (actual == expected) {
-    cout << "[SUCCESS] : " << test << " ✓" <<endl;
+    cout << "[SUCCESS] : " << test << " ✓" << endl;
   } else {
-    cout << "[FAILURE] : " << test << " ✗" <<endl;
+    cout << "[FAILURE] : " << test << " ✗" << endl;
     passing = false;
   }
 }
@@ -59,12 +59,19 @@ void itCanReadStringsAcrossLines(bool& passing) {
   report("itCanReadStringsAcrossLines", passing, tokens, expected);
 }
 
+void itCanReadStringsJammedTogether(bool& passing) {
+  vector<string> tokens = getTokens("\"1\"\"2*(\"()\"3\"\"4\"");
+  vector<string> expected = {"\"1\"", "\"2*(\"", "(", ")", "\"3\"", "\"4\""};
+  report("itCanReadStringsJammedTogether", passing, tokens, expected);
+}
+
 int main() {
   bool passing = true;
   itCanReadStringsInsideParens(passing);
   itCanReadParensWithAndWithoutSpaces(passing);
   itCanReadLetStatements(passing);
   itCanReadStringsAcrossLines(passing);
+  itCanReadStringsJammedTogether(passing);
   if (passing) {
     cout << "[LEXER TESTS] : ALL PASSED" << endl;
     return 0;

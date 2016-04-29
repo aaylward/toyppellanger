@@ -23,6 +23,7 @@ namespace toyppellanger {
       bool in_string = false;
       bool was_in_string = false;
       string leftover_string = "";
+      void emit(string token);
   };
 }
 
