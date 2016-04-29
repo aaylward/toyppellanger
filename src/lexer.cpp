@@ -42,25 +42,24 @@ bool isEndOfToken(const bool in_str, const string& s, size_t p) {
 
 ToyppelLexer::ToyppelLexer() {}
 
-void ToyppelLexer::tokenize(const string& s) {
+void ToyppelLexer::tokenize(const string& line) {
   size_t start = 0;
-  bool in_string = false;
 
-  for (size_t i=0; i<s.length(); i++) {
-    if (blank(in_string, s[i])) {
+  for (size_t i=0; i<line.length(); i++) {
+    if (blank(in_string, line[i])) {
       continue;
     }
 
-    if (isStartOfToken(in_string, s, i)) {
+    if (isStartOfToken(in_string, line, i)) {
       start = i;
-      if (isStringBoundary(s[i])) {
+      if (isStringBoundary(line[i])) {
         in_string = true;
       }
     }
 
-    if (isEndOfToken(in_string, s, i)) {
-      tokens.push_back(s.substr(start, i - start + 1));
-      if (isStringBoundary(s[i])) {
+    if (isEndOfToken(in_string, line, i)) {
+      tokens.push_back(line.substr(start, i - start + 1));
+      if (isStringBoundary(line[i])) {
         in_string = false;
       }
       start = i + 1;

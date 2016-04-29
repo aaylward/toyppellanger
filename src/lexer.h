@@ -20,6 +20,7 @@ namespace toyppellanger {
     private:
       vector<string> tokens = {};
       size_t position = 0;
+      bool in_string = false;
   };
 }
 
