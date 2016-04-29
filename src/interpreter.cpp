@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "interpreter.h"
 #include "lang/builtins.h"
@@ -10,7 +11,9 @@ using std::pair;
 using std::make_pair;
 using std::string;
 using std::stold;
+using std::invalid_argument;
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::exit;
 
@@ -32,16 +35,31 @@ void ToyppelTerpreter::run(const string &program) {
 
   while ((nextTokenMaybe = lexer.nextToken()).first) {
     token = nextTokenMaybe.second;
-    if (definedFunctions.count(token) != 0) {
-      definedFunctions[token](*this);
-    } else if (token == "let") {
+    if (token == "let") {
       string name = lexer.nextToken().second;
       long double value = stold(lexer.nextToken().second);
       define(name, value);
-    } else if (definedVariables.count(token) == 1) {
+    } else if (token == "def") {
+      string name = lexer.nextToken().second;
+      string definition;
+      while ((nextTokenMaybe = lexer.nextToken()).first && nextTokenMaybe.second != ";") {
+        definition += " ";
+        definition += nextTokenMaybe.second;
+      }
+      define(name, definition);
+    } else if (definedMacros.count(token) != 0) {
+      run(definedMacros[token]);
+    } else if (definedFunctions.count(token) != 0) {
+      definedFunctions[token](*this);
+    } else if (definedVariables.count(token) != 0) {
       stack.push_back(definedVariables[token]);
     } else {
-      stack.push_back(stold(token));
+      try {
+        stack.push_back(stold(token));
+      } catch (invalid_argument ia) {
+        cerr << "[ERROR]: unkown value: " << token << endl;
+        break;
+      }
     }
   }
 }
@@ -54,8 +72,25 @@ void ToyppelTerpreter::define(string name, long double value) {
   definedVariables.insert(make_pair(name, value));
 }
 
+void ToyppelTerpreter::define(string name, string definition) {
+  definedMacros.insert(make_pair(name, definition));
+}
+
 void ToyppelTerpreter::printTop() {
+  if (stack.empty()) {
+    cerr << "[ERROR]: Stack is Empty" << endl;
+    return;
+  }
   cout << stack.back() << endl;
+}
+
+void ToyppelTerpreter::pop() {
+  if (stack.empty()) {
+    cerr << "[ERROR]: Stack is Empty" << endl;
+    return;
+  }
+  cout << stack.back() << endl;
+  stack.pop_back();
 }
 
 void ToyppelTerpreter::clearStack() {
