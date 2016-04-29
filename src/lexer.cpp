@@ -2,7 +2,6 @@
 #include <utility>
 #include <string>
 #include <set>
-#include <stdexcept>
 
 #include "lexer.h"
 
@@ -11,7 +10,6 @@ using std::pair;
 using std::set;
 using std::make_pair;
 using std::string;
-using std::runtime_error;
 
 using toyppellanger::ToyppelLexer;
 
@@ -22,18 +20,18 @@ bool blank(const bool in_str, char c) {
 };
 
 bool isParen(char c) {
-  return c == '(' || c == ')'; };
+  return c == '(' || c == ')';
+};
 
 bool isStringBoundary(const char& c) {
   return c == '"';
 }
 
 bool isStartOfToken(const bool in_str, const string& s, size_t p) {
-  return (
-      !in_str && (
-        isStringBoundary(s[p]) ||
-        isParen(s[p]) ||
-        (!blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]) || isParen(s[p-1])))));
+  return !in_str &&
+    (isStringBoundary(s[p]) ||
+     isParen(s[p]) ||
+     (!blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]) || isParen(s[p-1]))));
 }
 
 bool isEndOfToken(const bool in_str, const string& s, size_t p) {
