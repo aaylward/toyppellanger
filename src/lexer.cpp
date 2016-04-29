@@ -54,16 +54,11 @@ void ToyppelLexer::tokenize(const string& line) {
     }
 
     if (isStartOfToken(in_string, line, i)) {
-      start = i;
-      if (isStringBoundary(line[i])) {
-        in_string = true;
-      }
+      onTokenStart(start, i, line[i]);
     }
 
     if (isEndOfToken(in_string && was_in_string, line, i)) {
-      emit(leftover_string + line.substr(start, i - start + 1));
-      leftover_string = "";
-      in_string = false;
+      onTokenEnd(line.substr(start, i - start + 1));
     }
   }
 
@@ -83,6 +78,19 @@ pair<bool, string> ToyppelLexer::nextToken() {
   return make_pair(true, tokens[position++]);
 }
 
-void ToyppelLexer::emit(string token) {
+void ToyppelLexer::store(string token) {
   tokens.push_back(token);
+}
+
+void ToyppelLexer::onTokenStart(size_t& start, size_t i, char c) {
+  start = i;
+  if (isStringBoundary(c)) {
+    in_string = true;
+  }
+};
+
+void ToyppelLexer::onTokenEnd(string token) {
+  store(leftover_string + token);
+  leftover_string = "";
+  in_string = false;
 }
