@@ -21,17 +21,20 @@ namespace toyppellanger {
       void run(const string& program);
       vector<long double>& getStack();
       void define(string name, long double value);
+      void define(string name, string definition);
       void printTop();
       void clearStack();
       void debugStack();
       void prompt();
       void sayBye();
       void quit();
+      void pop();
 
     private:
       ToyppelLexer& lexer;
       unordered_map<string, void (*)(ToyppelTerpreter&)> definedFunctions = {};
       unordered_map<string, long double> definedVariables = {};
+      unordered_map<string, string> definedMacros = {};
       vector<long double> stack = {};
   };
 }

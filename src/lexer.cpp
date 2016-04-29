@@ -29,46 +29,48 @@ bool isStringBoundary(const char& c) {
 }
 
 bool isStartOfToken(const bool in_str, const string& s, size_t p) {
-  return !in_str && !blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]));
+  return (
+      !in_str && (
+        isStringBoundary(s[p]) ||
+        isParen(s[p]) ||
+        (!blank(in_str, s[p]) && (p == 0 || blank(in_str, s[p-1]) || isParen(s[p-1])))));
 }
 
 bool isEndOfToken(const bool in_str, const string& s, size_t p) {
   return (
       (in_str && isStringBoundary(s[p])) ||
-      (p == s.length() - 1) ||
+      (p == s.length() - 1 && (in_str && isStringBoundary(s[p]))) ||
       (!in_str && (isParen(s[p]) || isParen(s[p+1]))) ||
       (blank(in_str, s[p+1])));
 }
 
 ToyppelLexer::ToyppelLexer() {}
 
-void ToyppelLexer::tokenize(const string& s) {
+void ToyppelLexer::tokenize(const string& line) {
   size_t start = 0;
-  bool in_string = false;
 
-  for (size_t i=0; i<s.length(); i++) {
-    if (blank(in_string, s[i])) {
+  for (size_t i=0; i<line.length(); i++) {
+    was_in_string = in_string;
+    if (blank(in_string, line[i])) {
       continue;
     }
 
-    if (isStartOfToken(in_string, s, i)) {
+    if (isStartOfToken(in_string, line, i)) {
       start = i;
-      if (isStringBoundary(s[i])) {
+      if (isStringBoundary(line[i])) {
         in_string = true;
       }
     }
 
-    if (isEndOfToken(in_string, s, i)) {
-      tokens.push_back(s.substr(start, i - start + 1));
-      if (isStringBoundary(s[i])) {
-        in_string = false;
-      }
-      start = i + 1;
+    if (isEndOfToken(in_string && was_in_string, line, i)) {
+      emit(leftover_string + line.substr(start, i - start + 1));
+      leftover_string = "";
+      in_string = false;
     }
   }
 
   if (in_string) {
-    throw runtime_error("unexpected end of input");
+    leftover_string += line.substr(start, line.length() - start + 1);
   }
 }
 
@@ -81,4 +83,8 @@ pair<bool, string> ToyppelLexer::nextToken() {
     return make_pair(false, "");
   }
   return make_pair(true, tokens[position++]);
+}
+
+void ToyppelLexer::emit(string token) {
+  tokens.push_back(token);
 }

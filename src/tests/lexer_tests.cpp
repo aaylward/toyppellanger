@@ -14,6 +14,8 @@ using std::endl;
 
 using toyppellanger::ToyppelLexer;
 
+#define DEBUG for(auto t : tokens) cout << t << endl;
+
 vector<string> getTokens(const string& program) {
   ToyppelLexer lexer;
   lexer.tokenize(program);
@@ -22,9 +24,9 @@ vector<string> getTokens(const string& program) {
 
 void report(const char* test, bool& passing, vector<string>& actual, vector<string>& expected) {
   if (actual == expected) {
-    cout << "[SUCCESS] : " << test << " ✓" <<endl;
+    cout << "[SUCCESS] : " << test << " ✓" << endl;
   } else {
-    cout << "[FAILURE] : " << test << " ✗" <<endl;
+    cout << "[FAILURE] : " << test << " ✗" << endl;
     passing = false;
   }
 }
@@ -50,11 +52,39 @@ void itCanReadLetStatements(bool& passing) {
   report("itCanReadLetStatements", passing, tokens, expected);
 }
 
+void itCanReadStringsAcrossTwoLines(bool& passing) {
+  ToyppelLexer lexer;
+  lexer.tokenize("Ralph said, \"Hello, ");
+  lexer.tokenize("World!\"()");
+  vector<string> tokens = lexer.getTokens();
+  vector<string> expected = {"Ralph", "said,", "\"Hello, World!\"", "(", ")"};
+  report("itCanReadStringsAcrossTwoLines", passing, tokens, expected);
+}
+
+void itCanReadStringsAcrossMoreThanTwoLines(bool& passing) {
+  ToyppelLexer lexer;
+  lexer.tokenize("Ralph said, \"Hello, ");
+  lexer.tokenize("123 ");
+  lexer.tokenize("World!\"()");
+  vector<string> tokens = lexer.getTokens();
+  vector<string> expected = {"Ralph", "said,", "\"Hello, 123 World!\"", "(", ")"};
+  report("itCanReadStringsAcrossMoreThanTwoLines", passing, tokens, expected);
+}
+
+void itCanReadStringsJammedTogether(bool& passing) {
+  vector<string> tokens = getTokens("\"1\"\"2*(\"()\"3\"\"4\"");
+  vector<string> expected = {"\"1\"", "\"2*(\"", "(", ")", "\"3\"", "\"4\""};
+  report("itCanReadStringsJammedTogether", passing, tokens, expected);
+}
+
 int main() {
   bool passing = true;
   itCanReadStringsInsideParens(passing);
   itCanReadParensWithAndWithoutSpaces(passing);
   itCanReadLetStatements(passing);
+  itCanReadStringsAcrossTwoLines(passing);
+  itCanReadStringsAcrossMoreThanTwoLines(passing);
+  itCanReadStringsJammedTogether(passing);
   if (passing) {
     cout << "[LEXER TESTS] : ALL PASSED" << endl;
     return 0;

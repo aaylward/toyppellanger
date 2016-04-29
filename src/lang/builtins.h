@@ -23,6 +23,7 @@ namespace toyppellanger {
       {"debug",  [](ToyppelTerpreter& t) -> void {t.debugStack();}},
       {"clear",  [](ToyppelTerpreter& t) -> void {t.clearStack();}},
       {"quit",  [](ToyppelTerpreter& t) -> void {t.quit();}},
+      {"pop",  [](ToyppelTerpreter& t) -> void {t.pop();}},
     };
   }
 }
