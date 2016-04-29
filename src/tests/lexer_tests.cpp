@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-#include "../lexer.h"
+#include "../lexer/tokenizer.h"
 
 using std::vector;
 using std::string;
@@ -12,14 +12,14 @@ using std::pair;
 using std::cout;
 using std::endl;
 
-using toyppellanger::ToyppelLexer;
+using toyppellanger::Tokenizer;
 
 #define DEBUG for(auto t : tokens) cout << t << endl;
 
 vector<string> getTokens(const string& program) {
-  ToyppelLexer lexer;
-  lexer.tokenize(program);
-  return lexer.getTokens();
+  Tokenizer tokenizer;
+  tokenizer.tokenize(program);
+  return tokenizer.getTokens();
 }
 
 void report(const char* test, bool& passing, vector<string>& actual, vector<string>& expected) {
@@ -53,20 +53,20 @@ void itCanReadLetStatements(bool& passing) {
 }
 
 void itCanReadStringsAcrossTwoLines(bool& passing) {
-  ToyppelLexer lexer;
-  lexer.tokenize("Ralph said, \"Hello, ");
-  lexer.tokenize("World!\"()");
-  vector<string> tokens = lexer.getTokens();
+  Tokenizer tokenizer;
+  tokenizer.tokenize("Ralph said, \"Hello, ");
+  tokenizer.tokenize("World!\"()");
+  vector<string> tokens = tokenizer.getTokens();
   vector<string> expected = {"Ralph", "said,", "\"Hello, World!\"", "(", ")"};
   report("itCanReadStringsAcrossTwoLines", passing, tokens, expected);
 }
 
 void itCanReadStringsAcrossMoreThanTwoLines(bool& passing) {
-  ToyppelLexer lexer;
-  lexer.tokenize("Ralph said, \"Hello, ");
-  lexer.tokenize("123 ");
-  lexer.tokenize("World!\"()");
-  vector<string> tokens = lexer.getTokens();
+  Tokenizer tokenizer;
+  tokenizer.tokenize("Ralph said, \"Hello, ");
+  tokenizer.tokenize("123 ");
+  tokenizer.tokenize("World!\"()");
+  vector<string> tokens = tokenizer.getTokens();
   vector<string> expected = {"Ralph", "said,", "\"Hello, 123 World!\"", "(", ")"};
   report("itCanReadStringsAcrossMoreThanTwoLines", passing, tokens, expected);
 }

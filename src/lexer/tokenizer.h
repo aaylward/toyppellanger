@@ -10,9 +10,9 @@ using std::pair;
 using std::string;
 
 namespace toyppellanger {
-  class ToyppelLexer {
+  class Tokenizer {
     public:
-      ToyppelLexer();
+      Tokenizer();
       void tokenize(const string& program);
       vector<string> getTokens();
       pair<bool, string> nextToken();

@@ -6,7 +6,7 @@
 #include <set>
 #include <string>
 
-#include "lexer.h"
+#include "lexer/tokenizer.h"
 
 using std::unordered_map;
 using std::vector;
@@ -16,7 +16,7 @@ using std::string;
 namespace toyppellanger {
   class ToyppelTerpreter {
     public:
-      ToyppelTerpreter(ToyppelLexer& lexer);
+      ToyppelTerpreter(Tokenizer& tokenizer);
       void addWords(unordered_map<string, void (*)(ToyppelTerpreter& interpreter)> definedTokens);
       void run(const string& program);
       vector<long double>& getStack();
@@ -31,7 +31,7 @@ namespace toyppellanger {
       void pop();
 
     private:
-      ToyppelLexer& lexer;
+      Tokenizer& tokenizer;
       unordered_map<string, void (*)(ToyppelTerpreter&)> definedFunctions = {};
       unordered_map<string, long double> definedVariables = {};
       unordered_map<string, string> definedMacros = {};
