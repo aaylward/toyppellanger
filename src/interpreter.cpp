@@ -20,7 +20,7 @@ using std::exit;
 using toyppellanger::ToyppelTerpreter;
 using toyppellanger::lang::builtin_functions;
 
-ToyppelTerpreter::ToyppelTerpreter(ToyppelLexer& lexer) : lexer(lexer) {
+ToyppelTerpreter::ToyppelTerpreter(Tokenizer& tokenizer) : tokenizer(tokenizer) {
   addWords(builtin_functions);
 }
 
@@ -29,20 +29,20 @@ void ToyppelTerpreter::addWords(unordered_map<string, void (*)(ToyppelTerpreter 
 }
 
 void ToyppelTerpreter::run(const string &program) {
-  lexer.tokenize(program);
+  tokenizer.tokenize(program);
   pair<bool, string> nextTokenMaybe;
   string token;
 
-  while ((nextTokenMaybe = lexer.nextToken()).first) {
+  while ((nextTokenMaybe = tokenizer.nextToken()).first) {
     token = nextTokenMaybe.second;
     if (token == "let") {
-      string name = lexer.nextToken().second;
-      long double value = stold(lexer.nextToken().second);
+      string name = tokenizer.nextToken().second;
+      long double value = stold(tokenizer.nextToken().second);
       define(name, value);
     } else if (token == "def") {
-      string name = lexer.nextToken().second;
+      string name = tokenizer.nextToken().second;
       string definition;
-      while ((nextTokenMaybe = lexer.nextToken()).first && nextTokenMaybe.second != ";") {
+      while ((nextTokenMaybe = tokenizer.nextToken()).first && nextTokenMaybe.second != ";") {
         definition += " ";
         definition += nextTokenMaybe.second;
       }
